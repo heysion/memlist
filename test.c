@@ -5,11 +5,6 @@
 #include "memlist.h"
 
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
-
 int main()
 {
   char *p[3];
