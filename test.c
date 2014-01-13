@@ -1,13 +1,21 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
+#include <malloc.h>
 #include "memlist.h"
+
+
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 
 int main()
 {
   char *p[3];
   int i =0;
+
+  /*
 
   for(;i<3;i++)
     {
@@ -15,5 +23,7 @@ int main()
     }
 
   cgfree();
+  */
+  p[0] = malloc(10);
   return 0;
 }
