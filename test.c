@@ -12,13 +12,15 @@ int main()
 
   setenv("MALLOC_TRACE","output.out",1);
   mtrace();
-
+  /*
   for(;i<3;i++)
     {
       p[i]=(char *)cgmalloc(i+10);
     }
 
   cgfree();
-
+  */
+  p[0] = malloc(10);
+  free(p[0]);
   return 0;
 }
