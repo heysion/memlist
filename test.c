@@ -3,14 +3,15 @@
 #include <string.h>
 #include <malloc.h>
 #include "memlist.h"
-
+#include <mcheck.h> 
 
 int main()
 {
   char *p[3];
   int i =0;
 
-  /*
+  setenv("MALLOC_TRACE","output.out",1);
+  mtrace();
 
   for(;i<3;i++)
     {
@@ -18,7 +19,6 @@ int main()
     }
 
   cgfree();
-  */
-  p[0] = malloc(10);
+
   return 0;
 }
