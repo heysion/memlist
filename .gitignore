@@ -1,6 +1,6 @@
 #files
 etemp/*
-# emacs temp file
+#emacs temp file
 *~
 # Object files
 *.o
