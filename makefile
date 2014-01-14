@@ -1,6 +1,6 @@
 CC = gcc
 SRC = test.c
-SRC2 = newfree_t.c
+CFLAG = -g 
 
 test.out :test.o
 test.o:$(SRC)
@@ -16,3 +16,6 @@ tt.o:$(SRC)
 tt2.out:tt2.o
 tt2.o:$(SRC)
 	$(CC) -o tt2.out $(SRC2)
+clear:
+	@echo "clear ...."
+	@-rm *.out
