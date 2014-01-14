@@ -1,5 +1,6 @@
 CC = gcc
 SRC = test.c
+SRC2 = newfree_t.c
 
 test.out :test.o
 test.o:$(SRC)
@@ -11,3 +12,7 @@ tt.o:$(SRC)
 #cc -DDMALLOC -DDMALLOC_FUNC_CHECK file.c
 #ttest.out:$(SRC)
 #	$(CC) -DDMALLOC -DDMALLOC_FUNC_CHECK $(SRC)  -g -o ttest.out
+
+tt2.out:tt2.o
+tt2.o:$(SRC)
+	$(CC) -o tt2.out $(SRC2)

@@ -92,7 +92,8 @@ void * cgmalloc(size_t sz)
 
 int cgfree()
 {
-  list_t *t,temp;
+  list_t *t;
+  list_t *temp;
 
   for(t=plist;t!=NULL; )
     {
