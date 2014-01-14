@@ -8,6 +8,7 @@
 
 typedef struct mem_list * plist_t ;
 typedef struct mem_list list_t ;
+
 typedef struct mem_list
 {
   void *d;
@@ -91,12 +92,14 @@ void * cgmalloc(size_t sz)
 
 int cgfree()
 {
-  list_t *t;
+  list_t *t,temp;
 
-  for(t=plist;t!=NULL;t=t->next)
+  for(t=plist;t!=NULL; )
     {
+      temp = t->next ;
       free(t->d);
       free(t);
+      t= temp;
     }
   return 0;
 }
