@@ -1,7 +1,7 @@
-#include <stdlibo.h>
+#include <stdlib.h>
 #include <stdio.h>
 
-#inlcude "memlist.h"
+#include "memlist.h"
 
 void * cgmalloc(size_t sz)
 {

@@ -1,21 +1,37 @@
+#**************************************************
+#Description: md5 libfile makefile
+#Version:     v0.01
+#Copyleft:    
+#**************************************************
+#SHELL=/bin/sh
 CC = gcc
-SRC = test.c
-CFLAG = -g 
+SRC1    = memlist.c 
+SRC2    = test.c
+OBJ = memlist.o 
+AR = ar rc
+LIB_A = libmemlist.a
+LD_FLAGS_A = -c 
+LIB_SO = memlist.so
+LD_FLAGS_SO = -shared -fpic -o
 
-test.out :test.o
-test.o:$(SRC)
-	$(CC) -o test.out $(SRC)
+defuat:$(LIB_A)
 
-tt.out:tt.o
-tt.o:$(SRC)
-	$(CC) -o tt.out $(SRC)
-#cc -DDMALLOC -DDMALLOC_FUNC_CHECK file.c
-#ttest.out:$(SRC)
-#	$(CC) -DDMALLOC -DDMALLOC_FUNC_CHECK $(SRC)  -g -o ttest.out
+$(LIB_OBJ):
+	$(CC) $(SRC) $(LD_FLAGS_SO) $(LIB_SO)
 
-tt2.out:tt2.o
-tt2.o:$(SRC)
-	$(CC) -o tt2.out $(SRC2)
-clear:
-	@echo "clear ...."
-	@-rm *.out
+$(LIB_A):$(OBJ)
+	$(AR) $(LIB_A) $(OBJ)
+$(OBJ):$(SRC1)
+	$(CC) $(LD_FLAGS_A) $(SRC1) 
+
+
+.PHONY:clean
+
+clean:
+	@echo "**********Clean*******************"
+	@echo
+	@-rm -f *.out *.a *.so *.o
+	@echo "**********Complete****************"
+
+#clean:
+#	-rm -f $(BIN_OBJ) $(OBJ) $(LIB_OBJ_A) $(LIB_OBJ_SO) 
