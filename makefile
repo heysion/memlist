@@ -8,6 +8,7 @@ CC = gcc
 SRC1    = memlist.c 
 SRC2    = test.c
 OBJ = memlist.o 
+TEST = test
 AR = ar rc
 LIB_A = libmemlist.a
 LD_FLAGS_A = -c 
@@ -24,7 +25,10 @@ $(LIB_A):$(OBJ)
 $(OBJ):$(SRC1)
 	$(CC) $(LD_FLAGS_A) $(SRC1) 
 
+$(TEST):
+	$(CC) $(SRC2) -o $(TEST).out
 
+#gcc test.c -lhello -L. -static -o hello.static
 .PHONY:clean
 
 clean:
