@@ -86,6 +86,7 @@ int cgfree()
       free(t);
       t= temp;
     }
+  plist =NULL ;
   return 0;
 }
 
@@ -140,6 +141,7 @@ int del_list(list_t *pool)
       free(t);      
     }
 
+  pool = NULL ;
   return 0;
 }
 

@@ -7,18 +7,23 @@
 
 int main()
 {
-  char *p[3];
+  void *p[3];
+  void *dd[0];
   int i =0;
 
   setenv("MALLOC_TRACE","output.out",1);
   mtrace();
 
-  for(;i<3;i++)
+  for(;i<1;i++)
     {
-      p[i]=(char *)cgmalloc(i+10);
+      p[i]=cgmalloc(i+10);
     }
 
   cgfree();
 
+  dd[0] = cgmalloc(100);
+  dd[1] = cgmalloc(30);
+
+  cgfree();
   return 0;
 }
