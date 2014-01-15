@@ -1,5 +1,5 @@
 #**************************************************
-#Description: md5 libfile makefile
+#Description: memlist libfile makefile
 #Version:     v0.01
 #Copyleft:    
 #**************************************************
@@ -14,6 +14,7 @@ LIB_A = libmemlist.a
 LD_FLAGS_A = -c 
 LIB_SO = memlist.so
 LD_FLAGS_SO = -shared -fpic -o
+LD_FLAGS = -L. -lmemlist -I.
 
 defuat:$(LIB_A)
 
@@ -26,9 +27,8 @@ $(OBJ):$(SRC1)
 	$(CC) $(LD_FLAGS_A) $(SRC1) 
 
 $(TEST):
-	$(CC) $(SRC2) -o $(TEST).out
+	$(CC) -o $(TEST).out $(SRC2) $(LD_FLAGS) 
 
-#gcc test.c -lhello -L. -static -o hello.static
 .PHONY:clean
 
 clean:
@@ -37,5 +37,3 @@ clean:
 	@-rm -f *.out *.a *.so *.o
 	@echo "**********Complete****************"
 
-#clean:
-#	-rm -f $(BIN_OBJ) $(OBJ) $(LIB_OBJ_A) $(LIB_OBJ_SO) 
