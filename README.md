@@ -6,7 +6,8 @@ memlist
 编译方法
 ====
 
-#默认编译成静态库建议采用静态库编译的方法编译进去
+>tips
+>默认编译成静态库建议采用静态库编译的方法编译进去
 
 静态库
 >make 
@@ -16,7 +17,6 @@ or
 >make so
 
 静态库的使用方法
-
 ===
 
 gcc -o test.out test.c -L. -lmemlist -I.
