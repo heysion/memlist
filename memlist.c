@@ -3,6 +3,82 @@
 
 #include "memlist.h"
 
+void * cgmalloc2(size_t sz)
+{
+  list_t *t;
+  list_t *temp;
+  void * d,td;
+  
+  //  td=malloc(sz+sizeof(list_t));
+
+ start:
+
+  if(NULL != plist)		/* decide the plist is not null */
+     {
+      t = plist->next;
+      if(NULL == t && NULL == plist->d) /* decide the next not exist && the plist is not data */
+	{
+	  d =(void *)(plist + sizeof(list_t));
+	  plist->d = d ;
+	  plist->next = NULL ;
+	  return d;
+
+	}
+      else if(NULL == t && NULL != plist->d) /* the plist is haved data so must new next */
+	{
+	  temp = (list_t *)malloc(sizeof(list_t)+sz) ;
+	  if(NULL != temp )
+	    {
+	      d = (viod *)(temp + sizeof(list_t));
+	      temp->d = (void *)d ;
+	      temp->next = NULL ;
+	      plist->next = temp ;	    
+	      return d;
+	    }
+	  else{
+	    //	    free(d);
+	    return NULL ;
+	  }
+	  /*  is impossible*/
+	}
+      else			/* the new next && use data */
+	{
+	  temp = (list_t *)malloc(sizeof(list_t)+sz) ;
+	  if(NULL != temp)
+	    {
+	      d = (viod *)(temp + sizeof(list_t));
+	      temp->d = d ;
+	      temp->next = plist->next ;
+	      plist->next= temp ;
+	      return d;
+	    }
+	  else{
+	    //	    free(d);
+	    return NULL;
+	    }
+
+	}
+     }
+   else				/* the init plist */
+     {
+       plist = (plist_t )malloc(sizeof(list_t)+sz) ;
+       if(NULL != plist)
+	 {
+	   plist->next = NULL ;
+	   plist->d = NULL ;
+	   goto start ;
+	 }
+       else{			/* init plist faild */
+	 //	 free(d);
+	 return NULL ;
+       }
+     }
+
+  return d;
+}
+
+
+
 void * cgmalloc(size_t sz)
 {
   list_t *t;
