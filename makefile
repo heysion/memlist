@@ -5,7 +5,7 @@
 #**************************************************
 #SHELL=/bin/sh
 CC = gcc
-DEBUG = 
+DEBUG = -g
 SRC1    = memlist.c 
 SRC2    = test.c
 OBJ = memlist.o 
