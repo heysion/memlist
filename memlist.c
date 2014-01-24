@@ -3,13 +3,13 @@
 
 #include "memlist.h"
 
+size_t const list_sz = sizeof(list_t) ;
+
 void * cgmalloc(size_t sz)
 {
   list_t *t ;
   list_t *temp ;
   void * d ;
-  void * td ;
-  size_t const list_sz = sizeof(list_t) ;
   
  start:
 
@@ -96,9 +96,10 @@ int cgfree()
   return 0;
 }
 
+#define init(x) void *x=NULL
 
 /*  add mem to plist */
-void * cgadd(list_t *pool,size_t sz)
+void * push(list_t *pool,size_t sz)
 {
   list_t *t;
   list_t *temp;
@@ -135,7 +136,7 @@ void * cgadd(list_t *pool,size_t sz)
 
 
 /* free mem from plist */
-int cgdelete(list_t *pool)
+int delete(list_t *pool)
 {
   list_t *t;
   for(t=pool;t!=NULL;t=t->next)
