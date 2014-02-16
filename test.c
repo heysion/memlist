@@ -7,14 +7,14 @@
 
 int main()
 {
-  void *p[3];
-  void *dd[0];
+  void *p[4];
+  void *dd[2];
   int i =0;
 
   setenv("MALLOC_TRACE","output.out",1);
   mtrace();
 
-  for(;i<1;i++)
+  for(;i<4;i++)
     {
       p[i]=cgmalloc(i+10);
     }
