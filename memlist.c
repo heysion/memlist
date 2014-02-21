@@ -101,47 +101,89 @@ int cgfree()
 /*  add mem to plist */
 void * push(list_t *pool,size_t sz)
 {
-  list_t *t;
-  list_t *temp;
+
+  list_t *t ;
+  list_t *temp ;
   void * d ;
-  if(NULL != pool) {
+  
+ start:
+
+  if(NULL != pool) {		/* decide the pool is not null  */
     t = pool->next;
-    if(NULL == t && NULL == pool->d) {
+    if(( NULL != t )&&(NULL != pool->d )) { 
+      /* new pool->next */
+  
+      temp = (list_t *)malloc(list_sz + sz ) ;
+      if(NULL != temp) {
+	d = (void *) (((void *)temp) + list_sz );
+	temp->d = d ;
+	temp->next = t ;
+	pool->next = temp ;
+	return d;    
+
+      }
+      else {
+	/* malloc failed */
+	return NULL ;
+      }
+
+    } /* new pool->next end */
+    else if(( NULL == t )&&(NULL != pool->d )) {
+      /* the second pool->next */
+
+      temp = (list_t *)malloc(list_sz + sz ) ;
+      if(NULL != temp ) {
+	d = (void *) (((void * )temp ) + list_sz );
+	temp->d = d ;
+	temp->next = NULL ;
+	pool->next = temp ;	    
+	return d;
+      }
+      else {
+	/* malloc failed */
+	return NULL ;
+      }
+
+    } /* the second pool->next end */
+    else if(( NULL == t )&&(NULL == pool->d )) {
+      /*  pool->d && pool->next init*/
+
+      d = (void *)(((void *)pool) + list_sz);
       pool->d = d ;
       pool->next = NULL ;
       return d;
-    }
-    else if(NULL == t && NULL != pool->d ) {
-      temp = (list_t *)malloc(sizeof(list_t)) ;
-      temp->d = (void *)d ;
-      temp->next = NULL ;
-      pool->next = temp ;
-      
-      return d;
+
     }
     else {
-      temp = (list_t *)malloc(sizeof(list_t)) ;
-      temp->d = d ;
-      temp->next = pool->next ;
-      pool->next= temp ;
-
-      return d;
+      /*  */
+      return NULL ;
+    } 
+  }
+  else {			/* the pool==NULL ,init pool */
+    pool = (plist_t )malloc(list_sz+sz) ;
+    if(NULL != pool)	{
+      pool->next = NULL ;
+      pool->d = NULL ;
+      goto start ;
     }
+    else {
+
+      return NULL ;
+    }
+    
   }
-  else {
-    return NULL;
-  }
-  return NULL;
+
+  return d;
+
 }
 
 
-/* free mem from plist */
-int delete(list_t *pool)
+/* free mem from pool */
+int release(list_t *pool)
 {
   list_t *t;
   for(t=pool;t!=NULL;t=t->next)
     {
-      free(t->d);
       free(t);      
     }
 
