@@ -3,76 +3,83 @@
 
 #include "memlist.h"
 
+size_t const list_sz = sizeof(list_t) ;
+
 void * cgmalloc(size_t sz)
 {
-  list_t *t;
-  list_t *temp;
-  void * d;
+  list_t *t ;
+  list_t *temp ;
+  void * d ;
   
-  d=malloc(sz);
-
  start:
-  if(NULL != plist)		/* decide the plist is not null */
-     {
-      t = plist->next;
-      if(NULL == t && NULL == plist->d) /* decide the next not exist && the plist is not data */
-	{
-	  plist->d = d ;
-	  plist->next = NULL ;
-	  return d;
 
-	}
-      else if(NULL == t && NULL != plist->d) /* the plist is haved data so must new next */
-	{
-	  temp = (list_t *)malloc(sizeof(list_t)) ;
-	  if(NULL != temp )
-	    {
-	      temp->d = (void *)d ;
-	      temp->next = NULL ;
-	      plist->next = temp ;	    
-	      return d;
-	    }
-	  else{
-	    free(d);
-	    return NULL ;
-	  }
-	  /*  is impossible*/
-	}
-      else			/* the new next && use data */
-	{
-	  temp = (list_t *)malloc(sizeof(list_t)) ;
-	  if(NULL != temp)
-	    {
-	      temp->d = d ;
-	      temp->next = plist->next ;
-	      plist->next= temp ;
-	      return d;
-	    }
-	  else{
-	    free(d);
-	    return NULL;
-	    }
+  if(NULL != plist) {		/* decide the plist is not null  */
+    t = plist->next;
+    if(( NULL != t )&&(NULL != plist->d )) { 
+      /* new plist->next */
+  
+      temp = (list_t *)malloc(list_sz + sz ) ;
+      if(NULL != temp) {
+	d = (void *) (((void *)temp) + list_sz );
+	temp->d = d ;
+	temp->next = t ;
+	plist->next = temp ;
+	return d;    
 
-	}
-     }
-   else				/* the init plist */
-     {
-       plist = (plist_t )malloc(sizeof(list_t)) ;
-       if(NULL != plist)
-	 {
-	   plist->next = NULL ;
-	   plist->d = NULL ;
-	   goto start ;
-	 }
-       else{			/* init plist faild */
-	 free(d);
-	 return NULL ;
-       }
-     }
+      }
+      else {
+	/* malloc failed */
+	return NULL ;
+      }
+
+    } /* new plist->next end */
+    else if(( NULL == t )&&(NULL != plist->d )) {
+      /* the second plist->next */
+
+      temp = (list_t *)malloc(list_sz + sz ) ;
+      if(NULL != temp ) {
+	d = (void *) (((void * )temp ) + list_sz );
+	temp->d = d ;
+	temp->next = NULL ;
+	plist->next = temp ;	    
+	return d;
+      }
+      else {
+	/* malloc failed */
+	return NULL ;
+      }
+
+    } /* the second plist->next end */
+    else if(( NULL == t )&&(NULL == plist->d )) {
+      /*  plist->d && plist->next init*/
+
+      d = (void *)(((void *)plist) + list_sz);
+      plist->d = d ;
+      plist->next = NULL ;
+      return d;
+
+    }
+    else {
+      /*  */
+      return NULL ;
+    } 
+  }
+  else {			/* the plist==NULL ,init plist */
+    plist = (plist_t )malloc(list_sz+sz) ;
+    if(NULL != plist)	{
+      plist->next = NULL ;
+      plist->d = NULL ;
+      goto start ;
+    }
+    else {
+
+      return NULL ;
+    }
+    
+  }
 
   return d;
 }
-
 
 int cgfree()
 {
@@ -82,7 +89,6 @@ int cgfree()
   for(t=plist;t!=NULL; )
     {
       temp = t->next ;
-      free(t->d);
       free(t);
       t= temp;
     }
@@ -90,54 +96,94 @@ int cgfree()
   return 0;
 }
 
+#define init(x) void *x=NULL
 
-/* invalid this interface */
-int add_list(list_t *pool,void *d)
+/*  add mem to plist */
+void * push(list_t *pool,size_t sz)
 {
-  list_t *t;
-  list_t *temp;
- 
-  if(NULL != pool)
-    {
-      t = pool->next;
-      if(NULL == t && NULL == pool->d)
-	{
-	  pool->d = d ;
-	  pool->next = NULL ;
-	  return 0;
-	}else if(NULL == t && NULL != pool->d)
-	{
-	  temp = (list_t *)malloc(sizeof(list_t)) ;
-	  temp->d = (void *)d ;
-	  temp->next = NULL ;
-	  pool->next = temp ;
 
-	  return 0;
-	}
-      else
-	{
-	  temp = (list_t *)malloc(sizeof(list_t)) ;
-	  temp->d = d ;
-	  temp->next = pool->next ;
-	  pool->next= temp ;
+  list_t *t ;
+  list_t *temp ;
+  void * d ;
+  
+ start:
 
-	  return 0;
-	}
+  if(NULL != pool) {		/* decide the pool is not null  */
+    t = pool->next;
+    if(( NULL != t )&&(NULL != pool->d )) { 
+      /* new pool->next */
+  
+      temp = (list_t *)malloc(list_sz + sz ) ;
+      if(NULL != temp) {
+	d = (void *) (((void *)temp) + list_sz );
+	temp->d = d ;
+	temp->next = t ;
+	pool->next = temp ;
+	return d;    
+
+      }
+      else {
+	/* malloc failed */
+	return NULL ;
+      }
+
+    } /* new pool->next end */
+    else if(( NULL == t )&&(NULL != pool->d )) {
+      /* the second pool->next */
+
+      temp = (list_t *)malloc(list_sz + sz ) ;
+      if(NULL != temp ) {
+	d = (void *) (((void * )temp ) + list_sz );
+	temp->d = d ;
+	temp->next = NULL ;
+	pool->next = temp ;	    
+	return d;
+      }
+      else {
+	/* malloc failed */
+	return NULL ;
+      }
+
+    } /* the second pool->next end */
+    else if(( NULL == t )&&(NULL == pool->d )) {
+      /*  pool->d && pool->next init*/
+
+      d = (void *)(((void *)pool) + list_sz);
+      pool->d = d ;
+      pool->next = NULL ;
+      return d;
+
     }
-  else
-    {
-      return -1;
+    else {
+      /*  */
+      return NULL ;
+    } 
+  }
+  else {			/* the pool==NULL ,init pool */
+    pool = (plist_t )malloc(list_sz+sz) ;
+    if(NULL != pool)	{
+      pool->next = NULL ;
+      pool->d = NULL ;
+      goto start ;
     }
-  return 1;
+    else {
+
+      return NULL ;
+    }
+    
+  }
+
+  return d;
+
 }
 
-/* invalid this inteface */
-int del_list(list_t *pool)
+
+/* free mem from pool */
+int release(list_t *pool)
 {
   list_t *t;
   for(t=pool;t!=NULL;t=t->next)
     {
-      free(t->d);
       free(t);      
     }
 
